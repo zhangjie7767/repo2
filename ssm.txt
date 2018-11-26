@@ -1,0 +1,78 @@
+archetypeCatalog
+internal
+
+IDEA控制台总中文乱码
+-Dfile.encoding=UTF-8
+
+-DarchetypeCatalog=Internal
+
+Orcale安装成功测试文件
+sqlplus  system/root as sysdba 
+
+call dbms_xdb.cfg_update(updateXML(dbms_xdb.cfg_get(),
+'/xdbconfig/sysconfig/protocolconfig/httpconfig/http-port/text()',8081)); 
+call dbms_xdb.cfg_update(updateXML(dbms_xdb.cfg_get(), 
+'/xdbconfig/sysconfig/protocolconfig/ftpconfig/ftp-port/text()', 2101)); 
+commit;
+
+Maven插件安装 ，安装后 ， 可以直接右键模块/项目启动
+Settings-Plugins-Browse repositories-Maven Helper 插件安装
+
+ PLSQL中文乱码问题解决
+1.查看服务器端编码
+select userenv('language') from dual;
+我实际查到的结果为:AMERICAN_AMERICA.ZHS16GBK
+2.执行语句 select * from V$NLS_PARAMETERS 
+查看第一行中PARAMETER项中为NLS_LANGUAGE 对应的VALUE项中是否和第一步得到的值一样。
+如果不是，需要设置环境变量.
+否则PLSQL客户端使用的编码和服务器端编码不一致,插入中文时就会出现乱码.
+3.设置环境变量
+计算机->属性->高级系统设置->环境变量->新建
+设置变量名:NLS_LANG,变量值:第1步查到的值， 我的是	AMERICAN_AMERICA.ZHS16GBK
+4.重新启动PLSQL,插入数据正常
+
+
+在POM.xml文件，<build>标签里面写  
+     maven编译插件依赖
+       <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+        </plugins>
+
+       tomcat7插件依赖
+      <pluginManagement>
+            <plugins>
+                <!--tomcat插件-->
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <!-- tomcat7的插件， 不同tomcat版本这个也不一样 -->
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.1</version>
+                    <configuration>
+                        <!-- 通过maven tomcat7:run运行项目时，访问项目的端口号 -->
+                        <port>8080</port>
+                        <!-- 项目访问路径  本例：localhost:9090,  如果配置的aa， 则访问路径为localhost:9090/aa
+                        <path>/itcast_ssm</path>-->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+
+1、进一步了解Java开发的相关知识，掌握Java开发的基本技术
+2、学习MVC设计模式，并在后面的项目中运用。
+3、学习与使用SSM开发框架。
+4、熟练使用Mysql数据库软件，以及对表数据的设计。
+5、参与项目需求设计说明书的编写，学会需求分析。
+6、理解项目需求功能的代码逻辑，并编写代码实现功能。
+7、与团队人员协作对项目进行整合，并测试。
+这就是我实习期间所学到的知识的核心部分。
